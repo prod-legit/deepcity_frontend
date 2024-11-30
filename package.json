@@ -10,6 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/material-symbols": "^1.2.8",
+    "@iconify-json/mdi": "^1.2.1",
+    "@iconify-json/si": "^1.2.2",
     "@nuxt/ui": "^2.19.2",
     "cesium": "^1.123.1",
     "nuxt": "^3.14.1592",

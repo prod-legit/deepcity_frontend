@@ -6,6 +6,7 @@ import {
     VcGraphicsPoint,
     VcLayerImagery,
     VcImageryProviderArcgis,
+    useVueCesium,
 } from "vue-cesium";
 
 const config = reactive({
@@ -13,13 +14,20 @@ const config = reactive({
         cesiumPath: "https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js",
         ruRU: useRUCesiumLocale(),
     },
+    viewer: {
+        showCredit: false,
+    },
 });
+
+const onViewerReady = () => {
+    console.log(useVueCesium());
+};
 </script>
 
 <template>
     <div class="__cesium fixed inset-0">
         <VcConfigProvider v-bind="config.global">
-            <VcViewer>
+            <VcViewer v-bind="config.viewer" @cesiumReady="onViewerReady">
                 <VcLayerImagery>
                     <VcImageryProviderArcgis />
                 </VcLayerImagery>

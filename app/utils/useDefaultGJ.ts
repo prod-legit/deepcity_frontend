@@ -1,7 +1,6 @@
 import { useLocalStorage } from "@vueuse/core";
 export default () => {
     const saved = useLocalStorage("saved_gj", () => undefined);
-    console.log(saved.value);
     return saved.value
         ? saved.value
         : {

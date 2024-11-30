@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-defineProps<{
+const props = defineProps<{
     geojson: {
         type: "FeatureCollection";
         readonly features: ReadonlyArray<{
@@ -31,7 +31,7 @@ import {
     // @ts-ignore
     VcLayerImagery,
     // @ts-ignore
-    VcImageryProviderBing,
+    VcImageryProviderArcgis,
     // @ts-ignore
     VcGraphicsPolylineVolume,
     // @ts-ignore
@@ -61,8 +61,18 @@ const computeCircle = (radius: number) => {
     return positions;
 };
 
-// Compute the shape with a specified radius
-const shape = computeCircle(60000); // 60 km radius
+const pipeShapes = ref<Record<string, { x: number; y: number }[]>>({});
+
+watchEffect(() => {
+    for (const index in props.geojson.features) {
+        const feature = props.geojson.features[index];
+        if (feature) {
+            pipeShapes.value[index] = computeCircle(
+                feature.properties.meter_radius
+            );
+        }
+    }
+});
 </script>
 
 <template>
@@ -70,17 +80,19 @@ const shape = computeCircle(60000); // 60 km radius
         <VcConfigProvider :global="config.global">
             <VcViewer v-bind="config.viewer">
                 <VcLayerImagery>
-                    <VcImageryProviderBing url="https://dev.virtualearth.net" />
+                    <VcImageryProviderArcgis />
                 </VcLayerImagery>
-                <VcEntity>
+                <VcEntity v-for="(feature, index) in geojson.features">
                     <VcGraphicsPolylineVolume
-                        :positions="[
-                            { lng: -95.0, lat: 32.0, height: 0.0 },
-                            { lng: -95.0, lat: 36.0, height: 100000.0 },
-                            { lng: -99.0, lat: 36.0, height: 200000.0 },
-                        ]"
-                        :shape="shape"
-                        material="blue"
+                        :positions="
+                            feature.geometry.coordinates.map(
+                                ([lng, lat, height]) => {
+                                    return { lng, lat, height };
+                                }
+                            )
+                        "
+                        :shape="pipeShapes[index]"
+                        :material="feature.properties.color"
                         :cornerType="Cesium.CornerType.ROUNDED"
                     />
                 </VcEntity>

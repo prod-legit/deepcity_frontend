@@ -1,6 +1,6 @@
 <template>
     <div>
         <NuxtRouteAnnouncer />
-        <h1>Hello world!</h1>
+        <Cesium />
     </div>
 </template>

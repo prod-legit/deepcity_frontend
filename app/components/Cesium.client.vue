@@ -1,22 +1,26 @@
 <script lang="ts" setup>
 defineProps<{
-    type: "FeatureCollection";
-    features: Array<{
-        type: "Feature";
-        geometry: {
-            type: "LineString";
-            coordinates: Array<[number, number, number]>;
-        };
-        properties: {
-            typeofpipe: string;
-            radius: number;
-            depth: number;
-            date_last_fix: string;
-            date_need_fix: string;
-            material: string;
-            status: string;
-        };
-    }>;
+    geojson: {
+        type: "FeatureCollection";
+        readonly features: ReadonlyArray<{
+            type: "Feature";
+            geometry: {
+                type:
+                    | "LineString"
+                    | "Point"
+                    | "Polygon"
+                    | "MultiLineString"
+                    | "MultiPoint"
+                    | "MultiPolygon";
+                coordinates: ReadonlyArray<
+                    | number
+                    | readonly [number, number]
+                    | readonly [number, number, number]
+                >;
+            };
+            properties: Record<string, any>;
+        }>;
+    };
 }>();
 
 import {
@@ -27,7 +31,7 @@ import {
     // @ts-ignore
     VcLayerImagery,
     // @ts-ignore
-    VcImageryProviderArcgis,
+    VcImageryProviderBing,
     // @ts-ignore
     VcGraphicsPolylineVolume,
     // @ts-ignore
@@ -66,7 +70,7 @@ const shape = computeCircle(60000); // 60 km radius
         <VcConfigProvider :global="config.global">
             <VcViewer v-bind="config.viewer">
                 <VcLayerImagery>
-                    <VcImageryProviderArcgis />
+                    <VcImageryProviderBing url="https://dev.virtualearth.net" />
                 </VcLayerImagery>
                 <VcEntity>
                     <VcGraphicsPolylineVolume

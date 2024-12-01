@@ -83,16 +83,16 @@ onUnmounted(() => {
             <UButton size="xl" variant="link" @click="handleColorModeToggle">
                 <UIcon
                     class="hidden dark:block text-xl"
-                    name="i-material-symbols-dark-mode"
+                    name="i-material-symbols-dark-mode-rounded"
                 />
                 <UIcon
                     class="dark:hidden text-xl"
-                    name="i-material-symbols-light-mode"
+                    name="i-material-symbols-clear-day-rounded"
                 />
             </UButton>
             <p>Тема</p>
         </div>
-        <hr class="border-t-zinc-500 dark:border-t-zinc-700" />
+        <hr class="border-t-zinc-200 dark:border-t-zinc-700" />
         <p v-if="state.open">Фильтры</p>
         <div
             class="flex gap-2"

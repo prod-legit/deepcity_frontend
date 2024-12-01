@@ -31,7 +31,8 @@ const {
 const config = reactive({
     global: {
         cesiumPath: "https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js",
-        accessToken: cesium_token,
+        accessToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhOWVkYmNmMS02MmY2LTQyNGUtYThmZC01MTdmNzI3ZTE4ZWUiLCJpZCI6MjU4Njg5LCJpYXQiOjE3MzMwNTY0OTZ9.UZ4COEgsEbHtDs4OT3XiNb6Mtg1rZfLAbgNOjqpp1K8",
     },
     viewer: {
         showCredit: false,
@@ -106,7 +107,8 @@ const onReady = (data: any) => {
                 <VcEntity
                     v-for="(feature, index) in geojson.features"
                     :name="`${
-                        useCommunicationTypes()[feature.properties.typeofpipe].russian
+                        useCommunicationTypes()[feature.properties.typeofpipe]
+                            .russian
                     } - ${feature.properties.depth} м - ${
                         feature.properties.material
                     }`"

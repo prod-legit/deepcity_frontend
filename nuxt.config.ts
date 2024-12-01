@@ -13,5 +13,5 @@ export default defineNuxtConfig({
             cesium_token: process.env.CESIUM_ACCESS_TOKEN,
         },
     },
-    modules: ["@nuxt/ui", "nuxt-monaco-editor"],
+    modules: ["@nuxt/ui", "nuxt-monaco-editor", "@nuxt/icon"],
 });

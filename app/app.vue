@@ -7,7 +7,7 @@ const {
 
 const workingCopy = useState("global_json", () => "");
 
-const { data: geojson } = useFetch<Array<Map>>("/api/geo", {
+const { data: geojson, refresh } = useFetch<Array<Map>>("/api/geo", {
     baseURL: base_url as string,
     server: false,
 });
@@ -41,6 +41,6 @@ watch(
         <NuxtRouteAnnouncer />
         <Cesium v-if="pickedMap" :geojson="pickedMap.geojson" />
         <Sidebar />
-        <ContextualWindows />
+        <ContextualWindows :geojson="geojson" @updatejson="refresh" />
     </div>
 </template>

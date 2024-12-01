@@ -85,14 +85,6 @@ const onReady = (data: any) => {
     const { viewer } = data;
     // viewer.zoomTo(tileset);
 };
-
-const tileset = ref<any>(null);
-
-onMounted(() => {
-    tileset.value.style = new Cesium.Cesium3DTileStyle({
-        color: "color('white', 0.5)", // Здесь 0.5 означает 50% прозрачности
-    });
-});
 </script>
 
 <template>
@@ -104,7 +96,6 @@ onMounted(() => {
                     <VcTerrainProviderCesium />
                 </VcLayerImagery>
                 <VcPrimitiveTileset
-                    ref="tileset"
                     v-if="rendererMode === 0"
                     :assetId="96188"
                 />
@@ -119,7 +110,7 @@ onMounted(() => {
                                 return {
                                     lng,
                                     lat,
-                                    height: feature.properties.depth * -2 + 12,
+                                    height: feature.properties.depth * -2 + 120,
                                 };
                             })
                         "

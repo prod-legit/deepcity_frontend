@@ -1,4 +1,12 @@
 <script lang="ts" setup>
+import type { Map } from "~/types/gjson";
+
+const props = defineProps<{
+    geojson: Map[];
+}>();
+
+const emit = defineEmits(["updatejson"]);
+
 const jsonEditorOpen = useState("json_editor_open", () => false);
 
 const pickedMapID = useState<string | undefined>(
@@ -22,9 +30,20 @@ const editJSON = async () => {
                     geojson: JSON.parse(workingCopy.value),
                 },
             });
+            jsonEditorOpen.value = false;
+            emit("updatejson");
         }
     } catch {}
 };
+
+const creationQuery = ref("");
+
+const options = computed(() => {
+    return props.geojson.map((map) => ({
+        label: map.name,
+        value: map.id,
+    }));
+});
 </script>
 
 <template>
@@ -36,11 +55,20 @@ const editJSON = async () => {
                 :options="{ theme: 'vs-dark' }"
                 v-model="workingCopy"
             />
-            <UButton
-                class="absolute bottom-4 left-1/2 -translate-x-1/2"
-                label="Загрузить"
-                @click="editJSON"
-            />
+            <UButtonGroup class="absolute bottom-4 left-1/2 -translate-x-1/2">
+                <UInputMenu
+                    v-model="pickedMapID"
+                    :options="options"
+                    class="min-w-48"
+                    v-model:query="creationQuery"
+                    value-attribute="value"
+                >
+                    <template #option-empty="{ query }">
+                        Создать карту <q>{{ query }}</q>
+                    </template>
+                </UInputMenu>
+                <UButton label="Сохранить изменения" @click="editJSON" />
+            </UButtonGroup>
         </USlideover>
     </div>
 </template>

@@ -45,7 +45,7 @@ onUnmounted(() => {
 
 const rendererMode = useCookie<number>("renderer_mode");
 
-const modes = ["i-heroicons-square-3-stack-3d", "i-heroicons-photo-16-solid"];
+const modes = ["heroicons:square-3-stack-3d", "heroicons:photo-16-solid"];
 const handleChangeRendererMode = () => {
     rendererMode.value = (rendererMode.value + 1) % modes.length;
     window.location.reload();
@@ -65,18 +65,17 @@ const handleChangeRendererMode = () => {
                 v-if="state.open"
                 color="blue"
                 v-model="state.query"
-                icon="i-mdi-search"
                 placeholder="Поиск..."
                 size="lg"
                 autofocus
-            />
-            <UButton
-                v-else
-                icon="i-mdi-search"
-                size="xl"
-                variant="link"
-                @click="handleSearchClick"
-            />
+            >
+                <template #leading>
+                    <Icon name="mdi:search" class="text-xl text-primary-400" />
+                </template>
+            </UInput>
+            <UButton v-else size="xl" variant="link" @click="handleSearchClick">
+                <Icon name="mdi:search" class="text-xl" />
+            </UButton>
         </div>
         <div class="flex items-center gap-2 overflow-hidden">
             <UButton
@@ -88,21 +87,18 @@ const handleChangeRendererMode = () => {
             <p>GeoJSON</p>
         </div>
         <div class="flex items-center gap-2 overflow-hidden">
-            <UButton
-                :icon="modes[rendererMode]"
-                size="xl"
-                variant="link"
-                @click="handleChangeRendererMode"
-            />
+            <UButton size="xl" variant="link" @click="handleChangeRendererMode">
+                <Icon :name="modes[rendererMode] as string" class="text-xl" />
+            </UButton>
             <p>Режим</p>
         </div>
         <div class="flex items-center gap-2 overflow-hidden">
             <UButton size="xl" variant="link" @click="handleColorModeToggle">
-                <UIcon
+                <Icon
                     class="hidden dark:block text-xl"
                     name="i-material-symbols-dark-mode-rounded"
                 />
-                <UIcon
+                <Icon
                     class="dark:hidden text-xl"
                     name="i-material-symbols-clear-day-rounded"
                 />

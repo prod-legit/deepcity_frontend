@@ -4,3 +4,4 @@ metadata:
   name: "{{ .Release.Name }}-config"
 data:
   API_URL: "{{ .Values.config.api_url }}"
+  CESIUM_TOKEN: "{{ .Values.config.cesium_token }}"

@@ -68,6 +68,7 @@ jobs:
             --set image.tag=${{ inputs.image_tag }} \
             --set imagePullSecrets[0].name=${{ env.PULL_SECRET }} \
             --set config.api_url=${{ env.API_URL }} \
+            --set config.cesium_token=${{ secrets.CESIUM_TOKEN }} \
             --set ingress.enabled=true \
             --set ingress.domain=${{ env.INGRESS_DOMAIN }} \
             --set ingress.path=${{ env.INGRESS_PATH }} \

@@ -103,7 +103,16 @@ const onReady = (data: any) => {
                     v-else-if="rendererMode === 1"
                     :assetId="1415196"
                 />
-                <VcEntity v-for="(feature, index) in geojson.features">
+                <VcEntity
+                    v-for="(feature, index) in geojson.features"
+                    :name="`${
+                        { hot: 'Горячяя', cold: 'Холодная' }[
+                            feature.properties.typeofpipe
+                        ]
+                    } - ${feature.properties.depth} м - ${
+                        feature.properties.material
+                    }`"
+                >
                     <VcGraphicsPolylineVolume
                         :positions="
                             feature.geometry.coordinates.map(([lng, lat]) => {

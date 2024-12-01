@@ -75,6 +75,20 @@ defineShortcuts({
         handler: createNewMap,
     },
 });
+
+const pendingDelete = ref(false);
+
+const deleteJSON = async () => {
+    try {
+        pendingDelete.value = true;
+        await $fetch(`/api/geo/${pickedMapID.value}`, {
+            baseURL: base_url as string,
+            method: "DELETE",
+        });
+        window.location.reload();
+    } catch {}
+    pendingDelete.value = false;
+};
 </script>
 
 <template>
@@ -105,11 +119,20 @@ defineShortcuts({
                     v-if="creationQuery !== ''"
                     @click="createNewMap"
                     :disabled="pendingCreate"
+                    color="green"
                 >
                     <Icon name="mdi:plus" />
                 </UButton>
                 <UButton v-else @click="editJSON" :disabled="pendingUpload">
                     <Icon name="mi:save" />
+                </UButton>
+                <UButton
+                    v-if="creationQuery === '' && options.length > 1"
+                    @click="deleteJSON"
+                    :disabled="pendingDelete"
+                    color="red"
+                >
+                    <Icon name="mi:delete" />
                 </UButton>
             </UButtonGroup>
         </USlideover>

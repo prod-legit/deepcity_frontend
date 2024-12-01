@@ -31,8 +31,13 @@ spec:
         ports:
         - containerPort: 3000
         env:
-        - name: NUXT_PUBLIC_API_URL
+        - name: API_BASE_URL
           valueFrom:
             configMapKeyRef:
               name: "{{ .Release.Name }}-config"
               key: API_URL
+        - name: CESIUM_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: "{{ .Release.Name }}-config"
+              key: CESIUM_TOKEN

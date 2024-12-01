@@ -29,8 +29,7 @@ const {
 const config = reactive({
     global: {
         cesiumPath: "https://unpkg.com/cesium@latest/Build/Cesium/Cesium.js",
-        accessToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4MGU0NThjNS01ZWU0LTQ0YTctYmU0NC04ZjlmNWQyNDg1NWYiLCJpZCI6MjU4Njg5LCJpYXQiOjE3MzMwNTUyMjF9.mACSh2TXh3gkzbVqsXXid3z4_5jNAvKrgO_rvLBgDt4",
+        accessToken: cesium_token,
     },
     viewer: {
         showCredit: false,

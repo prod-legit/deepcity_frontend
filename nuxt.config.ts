@@ -17,4 +17,5 @@ export default defineNuxtConfig({
     icon: {
         provider: "iconify",
     },
+    ssr: false,
 });

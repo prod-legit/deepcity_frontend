@@ -113,7 +113,7 @@ const onReady = (data: any) => {
                                 return {
                                     lng,
                                     lat,
-                                    height: feature.properties.depth * -2,
+                                    height: feature.properties.depth * -5 - 1,
                                 };
                             })
                         "

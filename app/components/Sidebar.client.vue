@@ -57,14 +57,14 @@ onUnmounted(() => {
                 v-if="state.open"
                 color="blue"
                 v-model="state.query"
-                icon="mdi:search"
+                icon="i-mdi-search"
                 placeholder="Поиск..."
                 size="lg"
                 autofocus
             />
             <UButton
                 v-else
-                icon="mdi:search"
+                icon="i-mdi-search"
                 size="xl"
                 variant="link"
                 @click="handleSearchClick"
@@ -72,7 +72,7 @@ onUnmounted(() => {
         </div>
         <div class="flex items-center gap-2 overflow-hidden">
             <UButton
-                icon="si:json-fill"
+                icon="i-si-json-fill"
                 size="xl"
                 variant="link"
                 @click="handleJsonEditorClick"
@@ -83,11 +83,11 @@ onUnmounted(() => {
             <UButton size="xl" variant="link" @click="handleColorModeToggle">
                 <UIcon
                     class="hidden dark:block text-xl"
-                    name="material-symbols:dark-mode"
+                    name="i-material-symbols-dark-mode"
                 />
                 <UIcon
                     class="dark:hidden text-xl"
-                    name="material-symbols:light-mode"
+                    name="i-material-symbols-light-mode"
                 />
             </UButton>
             <p>Тема</p>

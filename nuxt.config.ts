@@ -14,4 +14,7 @@ export default defineNuxtConfig({
         },
     },
     modules: ["@nuxt/ui", "nuxt-monaco-editor", "@nuxt/icon"],
+    icon: {
+        provider: "iconify",
+    },
 });

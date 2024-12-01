@@ -30,7 +30,7 @@ watch(geojson, () => {
 watch(
     pickedMap,
     () => {
-        workingCopy.value = JSON.stringify(pickedMap.value, null, 2);
+        workingCopy.value = JSON.stringify(pickedMap.value?.geojson, null, 2);
     },
     { deep: true }
 );

@@ -20,9 +20,11 @@ const {
     public: { base_url },
 } = useRuntimeConfig();
 
+const pendingUpload = ref(false);
 const editJSON = async () => {
     try {
         if (JSON.parse(workingCopy.value)) {
+            pendingUpload.value = true;
             await $fetch(`/api/geo/${pickedMapID.value}`, {
                 baseURL: base_url as string,
                 method: "PATCH",
@@ -34,6 +36,7 @@ const editJSON = async () => {
             emit("updatejson");
         }
     } catch {}
+    pendingUpload.value = false;
 };
 
 const creationQuery = ref("");
@@ -44,12 +47,43 @@ const options = computed(() => {
         value: map.id,
     }));
 });
+
+const pendingCreate = ref(false);
+
+const createNewMap = async () => {
+    if (creationQuery.value !== "") {
+        try {
+            pendingCreate.value = true;
+            const { id } = await $fetch(`/api/geo`, {
+                baseURL: base_url as string,
+                method: "POST",
+                body: {
+                    geojson: JSON.parse(workingCopy.value),
+                    name: creationQuery.value,
+                    type: "user_upload",
+                },
+            });
+            pickedMapID.value = id;
+            emit("updatejson");
+        } catch {}
+        pendingCreate.value = false;
+    }
+};
+
+defineShortcuts({
+    enter: {
+        handler: createNewMap,
+    },
+});
 </script>
 
 <template>
     <div class="__contextual">
         <USlideover v-model="jsonEditorOpen">
             <MonacoEditor
+                :style="{
+                    opacity: creationQuery === '' ? 1 : 0.5,
+                }"
                 class="h-screen"
                 lang="json"
                 :options="{ theme: 'vs-dark' }"
@@ -67,7 +101,16 @@ const options = computed(() => {
                         Создать карту <q>{{ query }}</q>
                     </template>
                 </UInputMenu>
-                <UButton label="Сохранить изменения" @click="editJSON" />
+                <UButton
+                    v-if="creationQuery !== ''"
+                    @click="createNewMap"
+                    :disabled="pendingCreate"
+                >
+                    <Icon name="mdi:plus" />
+                </UButton>
+                <UButton v-else @click="editJSON" :disabled="pendingUpload">
+                    <Icon name="mi:save" />
+                </UButton>
             </UButtonGroup>
         </USlideover>
     </div>

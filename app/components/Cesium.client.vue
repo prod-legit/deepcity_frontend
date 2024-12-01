@@ -112,6 +112,15 @@ const onReady = (data: any) => {
                     } - ${feature.properties.depth} м - ${
                         feature.properties.material
                     }`"
+                    :description="`<span style='color: black'>Дата последнего ремонта: ${new Date(
+                        feature.properties.date_last_fix
+                    ).toLocaleDateString(
+                        'ru-RU'
+                    )}, Дата следующего ремонта: ${new Date(
+                        feature.properties.date_need_fix
+                    ).toLocaleDateString('ru-RU')}, Статус: ${
+                        feature.properties.status
+                    }, Комментарий: ${feature.properties.comment}</span>`"
                 >
                     <VcGraphicsPolylineVolume
                         :positions="

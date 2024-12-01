@@ -91,6 +91,8 @@ const deleteJSON = async () => {
     } catch {}
     pendingDelete.value = false;
 };
+
+const colorMode = useColorMode();
 </script>
 
 <template>
@@ -102,7 +104,9 @@ const deleteJSON = async () => {
                 }"
                 class="h-screen"
                 lang="json"
-                :options="{ theme: 'vs-dark' }"
+                :options="{
+                    theme: colorMode.value === 'dark' ? 'vs-dark' : 'vs-light',
+                }"
                 v-model="workingCopy"
             />
             <UButtonGroup class="absolute bottom-4 left-1/2 -translate-x-1/2">

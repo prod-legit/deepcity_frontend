@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Map } from "./types/gjson";
+import type { GJSON, Map } from "./types/gjson";
 
 const {
     public: { base_url },
@@ -34,12 +34,24 @@ watch(
     },
     { deep: true }
 );
+
+const filterState = useState("filter_state");
+
+const filteredGeojson = computed(() => {
+    return {
+        ...pickedMap.value.geojson,
+        features: pickedMap.value.geojson.features.filter(
+            (feature: GJSON["features"][number]) =>
+                filterState.value[feature.properties.typeofpipe]
+        ),
+    };
+});
 </script>
 
 <template>
     <div>
         <NuxtRouteAnnouncer />
-        <Cesium v-if="pickedMap" :geojson="pickedMap.geojson" />
+        <Cesium v-if="pickedMap" :geojson="filteredGeojson" />
         <Sidebar />
         <ContextualWindows :geojson="geojson" @updatejson="refresh" />
     </div>

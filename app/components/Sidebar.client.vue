@@ -50,6 +50,13 @@ const handleChangeRendererMode = () => {
     rendererMode.value = (rendererMode.value + 1) % modes.length;
     window.location.reload();
 };
+
+const initialState: Record<string, any> = useCommunicationTypes();
+Object.keys(initialState).forEach((key) => {
+    initialState[key] = true;
+});
+
+const filterState = useState("filter_state", () => initialState);
 </script>
 
 <template>
@@ -108,9 +115,30 @@ const handleChangeRendererMode = () => {
         <hr class="border-t-zinc-200 dark:border-t-zinc-700" />
         <p v-if="state.open">Фильтры</p>
         <div
-            class="flex gap-2"
+            class="flex gap-2 overflow-hidden flex-wrap max-w-[200px] items-center"
             :style="{ 'flex-direction': state.open ? 'row' : 'column' }"
-        ></div>
+        >
+            <UTooltip
+                v-for="(filter, key) in useCommunicationTypes()"
+                :text="filter.russian"
+            >
+                <UButton
+                    @click="filterState[key] = !filterState[key]"
+                    :ui="{ base: 'flex items-center justify-center aspect-1' }"
+                    :variant="filterState[key] ? 'solid' : 'soft'"
+                >
+                    <Icon
+                        :name="filter.icon"
+                        class="text-2xl"
+                        :style="{
+                            color: filterState[key]
+                                ? 'white'
+                                : 'rgb(var(--color-primary-400))',
+                        }"
+                    />
+                </UButton>
+            </UTooltip>
+        </div>
     </div>
 </template>
 

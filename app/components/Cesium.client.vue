@@ -106,9 +106,7 @@ const onReady = (data: any) => {
                 <VcEntity
                     v-for="(feature, index) in geojson.features"
                     :name="`${
-                        { hot: 'Горячяя', cold: 'Холодная' }[
-                            feature.properties.typeofpipe
-                        ]
+                        useCommunicationTypes()[feature.properties.typeofpipe].russian
                     } - ${feature.properties.depth} м - ${
                         feature.properties.material
                     }`"

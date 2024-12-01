@@ -44,6 +44,9 @@ onUnmounted(() => {
 });
 
 const rendererMode = useCookie<number>("renderer_mode");
+if (!rendererMode.value) {
+    rendererMode.value = 0;
+}
 
 const modes = ["heroicons:square-3-stack-3d", "heroicons:photo-16-solid"];
 const handleChangeRendererMode = () => {

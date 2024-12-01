@@ -7,13 +7,15 @@ import {
     // @ts-ignore
     VcLayerImagery,
     // @ts-ignore
-    VcImageryProviderArcgis,
+    VcImageryProviderOsm,
     // @ts-ignore
     VcGraphicsPolylineVolume,
     // @ts-ignore
     VcEntity,
     // @ts-ignore
     VcPrimitiveTileset,
+    // @ts-ignore
+    VcTerrainProviderCesium,
 } from "vue-cesium";
 import * as Cesium from "cesium";
 import type { GJSON } from "~/types/gjson";
@@ -37,6 +39,12 @@ const config = reactive({
 });
 
 const computeCache = ref<Record<number, { x: number; y: number }[]>>({});
+
+const rendererMode = useCookie<number>("renderer_mode");
+
+if (!rendererMode.value) {
+    rendererMode.value = 0;
+}
 
 // Function to compute a circular shape
 const computeCircle = (radius: number) => {
@@ -74,38 +82,27 @@ const typeToColor = {
 };
 
 const onReady = (data: any) => {
-    const { cesiumObject: tileset, viewer } = data;
-    const cartographic = Cesium.Cartographic.fromCartesian(
-        tileset.boundingSphere.center
-    );
-    const surface = Cesium.Cartesian3.fromRadians(
-        cartographic.longitude,
-        cartographic.latitude,
-        cartographic.height
-    );
-    const offset = Cesium.Cartesian3.fromRadians(
-        cartographic.longitude,
-        cartographic.latitude,
-        0
-    );
-    const translation = Cesium.Cartesian3.subtract(
-        offset,
-        surface,
-        new Cesium.Cartesian3()
-    );
-    tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
-    viewer.zoomTo(tileset);
+    const { viewer } = data;
+    // viewer.zoomTo(tileset);
 };
 </script>
 
 <template>
     <div class="__cesium fixed inset-0">
         <VcConfigProvider v-bind="config.global">
-            <VcViewer v-bind="config.viewer">
+            <VcViewer v-bind="config.viewer" @ready="onReady">
                 <VcLayerImagery>
-                    <!-- <VcImageryProviderArcgis /> -->
+                    <VcImageryProviderOsm />
+                    <VcTerrainProviderCesium />
                 </VcLayerImagery>
-                <VcPrimitiveTileset assetId="1415196" @ready="onReady" />
+                <VcPrimitiveTileset
+                    v-if="rendererMode === 0"
+                    :assetId="96188"
+                />
+                <VcPrimitiveTileset
+                    v-else-if="rendererMode === 1"
+                    :assetId="1415196"
+                />
                 <VcEntity v-for="(feature, index) in geojson.features">
                     <VcGraphicsPolylineVolume
                         :positions="
@@ -113,7 +110,7 @@ const onReady = (data: any) => {
                                 return {
                                     lng,
                                     lat,
-                                    height: feature.properties.depth * -5 - 1,
+                                    height: feature.properties.depth * -2 + 12,
                                 };
                             })
                         "

@@ -42,6 +42,14 @@ onMounted(() => {
 onUnmounted(() => {
     document.removeEventListener("click", handleClickOutside);
 });
+
+const rendererMode = useCookie<number>("renderer_mode");
+
+const modes = ["i-heroicons-square-3-stack-3d", "i-heroicons-photo-16-solid"];
+const handleChangeRendererMode = () => {
+    rendererMode.value = (rendererMode.value + 1) % modes.length;
+    window.location.reload();
+};
 </script>
 
 <template>
@@ -78,6 +86,15 @@ onUnmounted(() => {
                 @click="handleJsonEditorClick"
             />
             <p>GeoJSON</p>
+        </div>
+        <div class="flex items-center gap-2 overflow-hidden">
+            <UButton
+                :icon="modes[rendererMode]"
+                size="xl"
+                variant="link"
+                @click="handleChangeRendererMode"
+            />
+            <p>Режим</p>
         </div>
         <div class="flex items-center gap-2 overflow-hidden">
             <UButton size="xl" variant="link" @click="handleColorModeToggle">

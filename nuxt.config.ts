@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             base_url: process.env.API_BASE_URL,
-            cesium_token: process.env.CESIUM_ACCESS_TOKEN,
+            cesium_token: process.env.CESIUM_TOKEN,
         },
     },
     modules: ["@nuxt/ui", "nuxt-monaco-editor", "@nuxt/icon"],

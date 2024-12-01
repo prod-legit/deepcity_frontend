@@ -80,6 +80,10 @@ watchEffect(() => {
 const typeToColor = {
     hot: "red",
     cold: "blue",
+    electicity: "yellow",
+    drain: "gray",
+    metro: "orange",
+    gas: "green",
 };
 
 const onReady = (data: any) => {
